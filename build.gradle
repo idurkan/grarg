@@ -1,0 +1,18 @@
+// Builds grarg into grarg.jar in
+defaultTasks 'assemble'
+
+apply plugin: 'java'
+apply plugin: 'groovy'
+apply plugin: 'idea'
+
+group = 'com.casual.grarg'
+artifactId = 'grarg'
+version = '0.1-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+sourceCompatibility = 1.6
+targetCompatibility = 1.6
+
