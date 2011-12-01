@@ -1,9 +1,25 @@
+package com.casual.grarg
+
 class ArgumentParser {
     String description
     String epilogue
     boolean addHelp
     String usage
     String programName
+
+    // keep track of the order in which positional args must be fulfilled.
+    List positionalFulfillment
+
+    // for efficient lookup of args based on parsed names.
+    Map namesToArgs
+
+    // stores all args in order added.
+    List args
+
+    // argument groups in order added.  built-in positionals group is always first.
+    // built-in optionals group is always second.
+    List argGroups
+
 
     /**
      * Parses the arguments in the given string based on the previously specified options.
@@ -12,19 +28,65 @@ class ArgumentParser {
      * @return
      * @throws com.casual.grarg.ArgumentParseException when invalid arguments are specified.
      */
-    def public parseArguments(String arguments) {
+    public def parseArguments(String arguments) {
         return null
     }
 
-    def public addArgument(def argument) {
+    public def addPositionalArgument(def argument) {
 
     }
 
-    def public addArgumentGroup(def argumentGroup) {
-        
+    public def addOptionArgument(def argument) {
+
     }
 
-    def public printUsage() {
-        
+    public ArgumentGroup addArgumentGroup(String groupTitle, String groupDescription) {
+        return null
+    }
+
+    /**
+     * Prints a usage string showing the 'syntax' to use when calling the program.
+     * 
+     */
+    public void printUsage() {
+        println(makeUsageString())
+    }
+
+    /**
+     * Prints a message showing the usage plus detailed help.
+     */
+    public void printHelp() {
+        println(makeHelpString())
+    }
+
+    /**
+     *
+     */
+    private String makeUsageString() {
+        def builder = new StringBuilder()
+
+        args.each {
+            builder.append('yo! ')
+        }
+
+        return builder.toString()
+    }
+
+    /**
+     *
+     * @return
+     */
+    private String makeHelpString() {
+        def builder = new StringBuilder()
+
+        builder.append(makeUsageString())
+
+        argGroups.each { ArgumentGroup group->
+            group.groupArgs.each {
+                builder.append('yo! \n')
+            }
+        }
+
+        return builder.toString()
     }
 }
