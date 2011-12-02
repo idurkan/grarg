@@ -1,5 +1,7 @@
 package com.casual.grarg
 
+import com.sun.javaws.exceptions.InvalidArgumentException
+
 class ArgumentParser {
     String description
     String epilogue
@@ -32,12 +34,26 @@ class ArgumentParser {
         return null
     }
 
-    public def addPositionalArgument(def argument) {
+    public def addPositionalArgument(Map optionals, String name) {
+        def newArg = addPositionalArgumentInternal(optionals, name)
 
+        // what to do with it?
     }
 
-    public def addOptionArgument(def argument) {
+    private PositionalArgument addPositionalArgumentInternal(Map optionals, String name) {
+        return null
+    }
 
+    public def addOptionArgument(Map optionals, String name, String keyword) {
+        addOptionArgumentInternal(optionals, name, keyword)
+    }
+
+    public def addOptionArgument(Map optionals, String flag) {
+        def newArg = addOptionArgumentInternal(optionals, clearLeadingDashes(flag), flag)
+    }
+
+    private OptionArgument addOptionArgumentInternal(Map map, String name, String... flag) {
+        return null
     }
 
     public ArgumentGroup addArgumentGroup(String groupTitle, String groupDescription) {
