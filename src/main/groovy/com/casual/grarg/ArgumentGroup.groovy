@@ -5,18 +5,36 @@ package com.casual.grarg
  * together.
  */
 class ArgumentGroup {
-    private ArgumentParser parent
+    ArgumentParser parent
 
     String title
     String description
 
-    List groupArgs
+    final List<Argument> groupArgs = new ArrayList<Argument>()
 
-    public def addPositionalArgument(def argument) {
-        parent.addPositionalArgument(argument)
+    ArgumentGroup(ArgumentParser parent, String title, String description) {
+        this.parent = parent
+        this.title = title
+        this.description = description
     }
 
-    public def addOptionArgument(def argument) {
-        parent.addOptionArgument(argument)
+    public def addPositionalArgument(String name) {
+        return addPositionalArgument([:], name)
+    }
+
+    public def addPositionalArgument(Map optionals, String name) {
+        PositionalArgument result = parent.addPositionalArgument(optionals, name)
+        groupArgs.add(result)
+        return result
+    }
+
+    public def addOptionArgument(String name, String... flags) {
+        addOptionArgument([:], name, flags)
+    }
+
+    public def addOptionArgument(Map optionals, String name, String... flags) {
+        OptionArgument result = parent.addOptionArgument(optionals, name, flags)
+        groupArgs.add(result)
+        return result
     }
 }

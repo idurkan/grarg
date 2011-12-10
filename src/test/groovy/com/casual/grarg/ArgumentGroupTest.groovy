@@ -1,26 +1,23 @@
-package com.casual.grarg
+package com.casual.grarg;
 
-import org.junit.Test
 import org.junit.Before;
+import org.junit.Test;
 
-public class ArgumentParserTest {
-
+public class ArgumentGroupTest {
     ArgumentParser parser
+    ArgumentGroup gp1
+    ArgumentGroup gp2
 
-    @Before public void setup() {
+    @Before
+    public void setup() {
         parser = new ArgumentParser('Test Parser', 'foobar')
+        gp1 = parser.addArgumentGroup('Group1', 'Group1')
+        gp2 = parser.addArgumentGroup('Group2', 'Group2')
     }
 
-    @Test public void constructorTest() {
-        assert parser.description == 'Test Parser'
-        assert parser.programName == 'foobar'
-        assert parser.usage == null
-        assert parser.epilogue == null
-        assert parser.addHelp
-    }
-
-    @Test public void addPositionalArgumentTest() {
-        def posArg1 = parser.addPositionalArgument([:], 'arg1')
+    @Test
+    public void addPositionalArgumentTest() {
+        def posArg1 = gp1.addPositionalArgument([:], 'arg1')
 
         assert posArg1.name == 'arg1'
         assert posArg1.action == ActionType.STORE
@@ -30,7 +27,7 @@ public class ArgumentParserTest {
         assert posArg1.help == null
         assert posArg1.metavar == 'arg1'
 
-        def posArg2 = parser.addPositionalArgument(action:ActionType.APPEND, nargs:'3',
+        def posArg2 = gp2.addPositionalArgument(action:ActionType.APPEND, nargs:'3',
                 'arg2')
 
         assert posArg2.name == 'arg2'
@@ -41,7 +38,7 @@ public class ArgumentParserTest {
         assert posArg2.help == null
         assert posArg2.metavar == 'arg2'
 
-        def posArg3 = parser.addPositionalArgument(action:ActionType.APPEND, nargs:'*',
+        def posArg3 = gp1.addPositionalArgument(action:ActionType.APPEND, nargs:'*',
             defaultValue:['hello'], choices: ['hello', 'world'], help:'helpme!', metavar:'S', 'arg3')
 
         assert posArg3.name == 'arg3'
@@ -56,7 +53,7 @@ public class ArgumentParserTest {
     }
 
     @Test public void addOptionArgumentTest() {
-        def optArg1 = parser.addOptionArgument([:], 'arg1')
+        def optArg1 = gp1.addOptionArgument([:], 'arg1')
 
         assert optArg1.name == 'arg1'
         assert optArg1.flags == ['--arg1']
@@ -69,7 +66,7 @@ public class ArgumentParserTest {
 
         assert !optArg1.required
 
-        def optArg2 = parser.addOptionArgument(action:ActionType.APPEND, nargs:'3',
+        def optArg2 = gp2.addOptionArgument(action:ActionType.APPEND, nargs:'3',
                 'arg2')
 
         assert optArg2.name == 'arg2'
@@ -83,7 +80,7 @@ public class ArgumentParserTest {
 
         assert !optArg2.required
 
-        def optArg3 = parser.addOptionArgument(action:ActionType.APPEND, nargs:'*',
+        def optArg3 = gp1.addOptionArgument(action:ActionType.APPEND, nargs:'*',
             defaultValue:['hello'], choices: ['hello', 'world'], help:'helpme!', metavar:'S', 'arg3')
 
         assert optArg3.name == 'arg3'
@@ -98,7 +95,7 @@ public class ArgumentParserTest {
 
         assert !optArg3.required
 
-        def optArg4 = parser.addOptionArgument(action:ActionType.APPEND, nargs:'3',
+        def optArg4 = gp2.addOptionArgument(action:ActionType.APPEND, nargs:'3',
                 required:true, 'arg4', '-T', '--a2')
 
         assert optArg4.name == 'arg4'
@@ -112,17 +109,5 @@ public class ArgumentParserTest {
 
         assert optArg4.required
 
-    }
-
-    @Test public void addArgumentGroupTest() {
-        def group1 = parser.addArgumentGroup('Test Title', 'Test Description')
-        assert group1.title == 'Test Title'
-        assert group1.description == 'Test Description'
-        assert group1.parent.is(parser)
-
-        def group2 = parser.addArgumentGroup('Test Title')
-        assert group2.title == 'Test Title'
-        assert group2.description == null
-        assert group2.parent.is(parser)
     }
 }
