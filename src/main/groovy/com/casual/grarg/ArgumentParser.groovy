@@ -47,6 +47,8 @@ class ArgumentParser {
      * @throws com.casual.grarg.ArgumentParseException when invalid arguments are specified.
      */
     public def parseArguments(String arguments) {
+        ArgumentParserUtils.pa
+
         return null
     }
 

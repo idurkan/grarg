@@ -18,4 +18,23 @@ public class ArgumentParserUtilsTest {
     public void clearLeadingDashesExceptionTest() {
         assert "rofl" == ArgumentParserUtils.clearLeadingDashes("rofl")
     }
+
+    @Test public void tokenizeTests() {
+        def result = ArgumentParserUtils.tokenize('hello')
+        assert result == ['hello']
+
+        result = ArgumentParserUtils.tokenize('hello world')
+        assert result == ['hello', 'world']
+
+        result = ArgumentParserUtils.tokenize('hello world again')
+        assert result == ['hello', 'world', 'again']
+
+        result = ArgumentParserUtils.tokenize('    hello     world again    ')
+        assert result == ['hello', 'world', 'again']
+
+        result = ArgumentParserUtils.tokenize('hello  "this  world "  again')
+        assert result == ['hello', 'this  world ', 'again']
+
+        // TODO more testing of this.
+    }
 }
