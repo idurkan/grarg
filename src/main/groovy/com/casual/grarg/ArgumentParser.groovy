@@ -23,6 +23,9 @@ class ArgumentParser {
     // for efficient lookup of args based on parsed names.
     Map<String, Argument> namesToArgs = new HashMap()
 
+    // for lookup of option args based on their flags
+    Map<String, OptionArgument> flagsToArgs = new HashMap()
+
     // stores all args in order added.
     List<Argument> args = new ArrayList()
 
@@ -47,7 +50,16 @@ class ArgumentParser {
      * @throws com.casual.grarg.ArgumentParseException when invalid arguments are specified.
      */
     public def parseArguments(String arguments) {
-        ArgumentParserUtils.pa
+        return parseArguments(ArgumentParserUtils.tokenize(arguments))
+    }
+
+    public def parseArguments(String[] arguments) {
+        return parseArguments(arguments.toList())
+    }
+
+    public def parseArguments(List<String> arguments) {
+
+        // TODO first step: add defaults for every arg with a default.
 
         return null
     }
@@ -88,6 +100,10 @@ class ArgumentParser {
 
         args.add(newArg)
         namesToArgs[newArg.name] == newArg
+
+        flags.each {flag ->
+            flagsToArgs[flag] == newArg
+        }
 
         return newArg
     }
